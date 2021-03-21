@@ -10,3 +10,5 @@ The most updated featured image was taken and posted with the rest of this data 
 The jupyter notebook sumbitted is nearly identical to the scraping python script and the app references that script and the index.html found in the templates folder.
 
 Screenshots of the finished HTML are in the images folder.
+
+A bootstrap grid was used to create the HMTL, but limited styling was implemented due to the coder's lack of creativity.
