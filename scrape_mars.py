@@ -1,3 +1,4 @@
+from flask_pymongo import PyMongo
 from splinter import Browser, browser
 from bs4 import BeautifulSoup
 from webdriver_manager.chrome import ChromeDriverManager
@@ -5,7 +6,7 @@ import time
 import pandas as pd
 
 def init_browser():
-    executable_path = {"executable_path": "/usr/local/bin/chromedriver"}
+    executable_path = {'executable_path': ChromeDriverManager().install()}
     return Browser("chrome", **executable_path, headless = False)
 
 def scrape():
@@ -52,6 +53,7 @@ def scrape():
     #display(planet_comparison_df)   
     mars_facts = mars_table[0].rename(columns = ({0 : "Description", 1 : "Mars"})).set_index("Description")
     #display(mars_facts)
+    mars_html = mars_facts.to_html()
 
     hemisphere_dict_list = []
     hemisphere_images_urls = {}
@@ -70,10 +72,19 @@ def scrape():
         hemisphere_images_urls = {}
     hemisphere_dict_list
     browser.quit()
-    dict_data["article title"]  = title_list
-    dict_data["news_list"] = news_list
+    dict_data["article_title"]  = title_list[0]
+    dict_data["news_list"] = news_list[0]
     dict_data["featured_image"] = featured_image_jpg
-    dict_data["mars table" ] = mars_facts
+    dict_data["mars table" ] = mars_html
     dict_data["hemisphere_dict_list"] = hemisphere_dict_list
 
+    from pymongo import MongoClient
+    mongo_conn=MongoClient('mongodb://localhost:27017')
+    mars_db = mongo_conn["mars_db"]
+    mars_coll = mars_db["mars"]
+    mars_db.mars_coll.insert_one(dict_data)
+
     return dict_data
+
+if __name__ == "__main__":
+    scrape()
