@@ -75,7 +75,7 @@ def scrape():
     dict_data["article_title"]  = title_list[0]
     dict_data["news_list"] = news_list[0]
     dict_data["featured_image"] = featured_image_jpg
-    dict_data["mars table" ] = mars_html
+    dict_data["mars_table" ] = mars_html
     dict_data["hemisphere_dict_list"] = hemisphere_dict_list
 
     from pymongo import MongoClient
